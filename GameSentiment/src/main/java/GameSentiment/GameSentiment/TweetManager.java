@@ -29,6 +29,7 @@ public class TweetManager {
 			for(URLEntity url:urls){s=url+",";}
 			listatweet.add(tweet.getUser().getScreenName()+" - "+tweet.getText()+"{"+s+"}");
 		}
+		
 			
 			
 		}while((query=result.nextQuery())!=null);

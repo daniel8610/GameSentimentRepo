@@ -17,6 +17,8 @@ public class WrapperStanfordNLP {
     	//pipeline è un oggetto che sa fare tokenize, ssplit, parse, sentiment
         pipeline = new StanfordCoreNLP("MyPropFile.properties");
     }
+    
+    //questo da un sentiment totale prendendo la sentence piu lunga
     public static int findSentiment(String tweet) {
 
         int mainSentiment = 0;
@@ -38,6 +40,8 @@ public class WrapperStanfordNLP {
         }
         return mainSentiment;
     }
+    //Da Finire perche in una frase da il sentiment di ogni sentence bisogna fare un 
+    //risultato finale es pos +1 very pos +2 .....
     public static String findSentiment2(String tweet) {
         String sentiment="NonTrovato";
         if (tweet != null && tweet.length() > 0) {

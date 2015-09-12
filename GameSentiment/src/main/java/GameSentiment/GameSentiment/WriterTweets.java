@@ -22,6 +22,7 @@ public WriterTweets(String pathFile){
 	}
 	
 }
+
 /*METODO ORIGINALE
 public void writeEntities(List<String> lista,String url){
 	if(lista!=null){
