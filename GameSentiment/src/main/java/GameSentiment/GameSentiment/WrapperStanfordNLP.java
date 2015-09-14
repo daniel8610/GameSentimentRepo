@@ -1,59 +1,92 @@
 package GameSentiment.GameSentiment;
 
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.util.CoreMap;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
-public class WrapperStanfordNLP {
-	static StanfordCoreNLP pipeline;
+import edu.stanford.nlp.ie.NERClassifierCombiner;
 
-    public static void init() {
-    	//pipeline è un oggetto che sa fare tokenize, ssplit, parse, sentiment
-        pipeline = new StanfordCoreNLP("MyPropFile.properties");
+public class WrapperStanfordNLP implements INamedEntityRecognition{
+	
+	private String serializedClassifier;
+	//private AbstractSequenceClassifier<CoreLabel> classifier;
+	private NERClassifierCombiner classifier;
+	
+	public WrapperStanfordNLP(){
+		
+		try {
+			serializedClassifier = "training/english.all.3class.nodistsim.crf.ser.gz";
+			//classifier = CRFClassifier.getClassifier(serializedClassifier);
+			classifier = new NERClassifierCombiner(false, false, serializedClassifier);
+		} catch (Exception e) {
+			System.out.println("Exception in WrapperStanfordNLP constructor");
+		}
+	}
+	
+
+/*MODO MIO
+    private	LinkedList<String> getTypeEntitie(String output,String type){
+    	LinkedList<String> l = new LinkedList<String>();
+    	l.add(type);
+    	String[] r1=Jsoup.parse(output).getElementsByTag(type).html().replaceAll("\\r|\\n", "#").split("#");
+    	if(!r1[0].equals("")){
+    		for(String s:r1){
+    			if(!l.contains(s))
+    				l.add(s);
+    		}
+    		      
+*/
+    private	LinkedList<String> getAll(String output){
+    	LinkedList<String> result = new LinkedList<String>();
+    	result.add("ORGANIZATION");
+    	Iterator<Element> it = Jsoup.parse(output).getElementsByTag("ORGANIZATION").iterator();
+    	while (it.hasNext()){
+    		String entity = it.next().text();
+    		if (!result.contains(entity)){
+    			result.add(entity);
+    		}
+    	}
+    	result.add("PERSON");
+    	Iterator<Element> it2 = Jsoup.parse(output).getElementsByTag("PERSON").iterator();
+    	while (it2.hasNext()){
+    		String entity = it2.next().text();
+    		if (!result.contains(entity)){
+    			result.add(entity);
+    		}
+    	}
+    	result.add("LOCATION");
+    	Iterator<Element> it3 = Jsoup.parse(output).getElementsByTag("LOCATION").iterator();
+    	while (it3.hasNext()){
+    		String entity = it3.next().text();
+    		if (!result.contains(entity)){
+    			result.add(entity);
+    		}
+    	}
+    	
+    	return result;
+    	
     }
-    
-    //questo da un sentiment totale prendendo la sentence piu lunga
-    public static int findSentiment(String tweet) {
+  /*  MODO MIO
+	public LinkedList<String> getEntities(String html) {
+		
 
-        int mainSentiment = 0;
-        if (tweet != null && tweet.length() > 0) {
-            int longest = 0;
-            Annotation annotation = pipeline.process(tweet);
-            for (CoreMap sentence : annotation
-                    .get(CoreAnnotations.SentencesAnnotation.class)) {
-                Tree tree = sentence
-                        .get(SentimentCoreAnnotations.AnnotatedTree.class);
-                int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
-                String partText = sentence.toString();
-                if (partText.length() > longest) {
-                    mainSentiment = sentiment;
-                    longest = partText.length();
-                }
-
-            }
-        }
-        return mainSentiment;
-    }
-    //Da Finire perche in una frase da il sentiment di ogni sentence bisogna fare un 
-    //risultato finale es pos +1 very pos +2 .....
-    public static String findSentiment2(String tweet) {
-        String sentiment="NonTrovato";
-        if (tweet != null && tweet.length() > 0) {
-            
-            Annotation annotation = pipeline.process(tweet);
-            List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-            for (CoreMap sentence : sentences) {
-            	sentiment = sentence.get(SentimentCoreAnnotations.ClassName.class);
-            	 System.out.println(sentiment + "\t" + sentence);
-            }
-        }
-        return sentiment;
-    }
-
+		LinkedList<String> result = new LinkedList<String>();
+		String output=this.classifier.classifyToString(html, "inlineXML", true); 
+	    result.addAll(this.getTypeEntitie(output, "LOCATION"));
+	    result.addAll(this.getTypeEntitie(output, "PERSON"));
+	    result.addAll(this.getTypeEntitie(output, "ORGANIZATION"));
+		return result;
+	}
+	*/
+    public LinkedList<String> getEntities(String html) {
+	    if(html!=null){
+		String output=this.classifier.classifyToString(html, "inlineXML", true);
+		return this.getAll(output);
+	    }else{
+	    	return null;
+	    }
+	}
+	
 }

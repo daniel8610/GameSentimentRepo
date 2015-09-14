@@ -1,5 +1,7 @@
 package GameSentiment.Repository;
 
+import java.util.LinkedList;
+
 import org.bson.Document;
 
 import GameSentiment.GameSentiment.Tweet;
@@ -20,9 +22,17 @@ public ManagerMongoDb(){
 }
 //Da finire fa schifo devi gestire quando non cè url
 public void insertDocument(Tweet tw){
-	BasicDBObject doc = new BasicDBObject("user", tw.getUser()) 
-    .append("text", tw.getText())
+	String s="";
+	BasicDBObject doc = new BasicDBObject("text", tw.getText()) 
     .append("sentiment", tw.getSentiment());
+	if(tw.getUrl()!=null&&tw.getUrlEntity()!=null){
+	  doc.append("url", tw.getUrl());
+	  LinkedList<String> lista=tw.getUrlEntity();
+	  for(String e:lista){
+		  s+=e+",";
+	  }
+	  doc.append("entita", s);
+	}
 	this.collection.insert(doc);
 }
 

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WriterTweets {
@@ -39,12 +40,17 @@ public void writeEntities(List<String> lista,String url){
 	
 }*/
 //METODO SCRIVE TUTTO IN UNA RIGA
-public void writeTweet(ArrayList<String> listaTweet) throws IOException {
+public void writeTweet(LinkedList<Tweet> listaTweet) throws IOException {
 	if(listaTweet!=null){
 		
-	for(String tweet:listaTweet){
+	for(Tweet tweet:listaTweet){
 		try {
-			this.bw.write(tweet);
+			String s="";
+			LinkedList<String>l=tweet.getUrlEntity();
+			for(String e:l){
+				s+=e;
+			}
+			this.bw.write(tweet.getText()+""+tweet.getSentiment()+""+tweet.getUrl()+""+s);
 			bw.newLine();
 		} catch (IOException e) {
 			e.printStackTrace();

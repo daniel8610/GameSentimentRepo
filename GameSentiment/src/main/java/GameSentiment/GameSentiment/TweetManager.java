@@ -19,16 +19,14 @@ public class TweetManager {
 		ArrayList<String> listatweet=new ArrayList<String>();
 		try {
 		Query query=new Query(q);
-		query.setLang("it");
+		query.setLang("en");
 		QueryResult result;
 		do{
 	      result=tw.search(query);
 		List<Status> tweets=result.getTweets();
 		for(Status tweet:tweets){
-			String s="";
-			URLEntity[] urls=tweet.getURLEntities();
-			for(URLEntity url:urls){s=url+",";}
-			listatweet.add(tweet.getUser().getScreenName()+" - "+tweet.getText()+"{"+s+"}");
+			if(!tweet.isRetweet())
+			listatweet.add(tweet.getText());
 		}
 		
 			
@@ -36,7 +34,7 @@ public class TweetManager {
 		}while((query=result.nextQuery())!=null);
 	} catch (TwitterException te) {
         te.printStackTrace();
-        System.out.println("fallimento nel trovare tweet");
+        System.out.println("Superato limite");
     }	
 		
 		
