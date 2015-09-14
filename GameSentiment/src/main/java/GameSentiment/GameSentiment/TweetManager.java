@@ -19,6 +19,7 @@ public class TweetManager {
 		ArrayList<String> listatweet=new ArrayList<String>();
 		try {
 		Query query=new Query(q);
+		query.setLang("it");
 		QueryResult result;
 		do{
 	      result=tw.search(query);
