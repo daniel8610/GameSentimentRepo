@@ -20,10 +20,10 @@ public ManagerMongoDb(){
 	
 	
 }
-//Da finire fa schifo devi gestire quando non cè url
 public void insertDocument(Tweet tw){
 	String s="";
-	BasicDBObject doc = new BasicDBObject("text", tw.getText()) 
+	BasicDBObject doc = new BasicDBObject("topic", tw.getTopic())
+	.append("text", tw.getText()) 
     .append("sentiment", tw.getSentiment());
 	if(tw.getUrl()!=null&&tw.getUrlEntity()!=null){
 	  doc.append("url", tw.getUrl());
