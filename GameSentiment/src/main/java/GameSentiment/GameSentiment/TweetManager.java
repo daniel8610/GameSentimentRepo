@@ -1,6 +1,7 @@
 package GameSentiment.GameSentiment;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import twitter4j.Query;
@@ -14,9 +15,9 @@ import twitter4j.URLEntity;
 
 public class TweetManager {
 
-	public static ArrayList<String> getTweets(String q){
+	public static LinkedList<SimpleTweet> getTweets(String q){
 		Twitter tw=new TwitterFactory().getInstance();
-		ArrayList<String> listatweet=new ArrayList<String>();
+		LinkedList<SimpleTweet> listatweet=new LinkedList<SimpleTweet>();
 		try {
 		Query query=new Query(q);
 		query.setLang("en");
@@ -25,8 +26,17 @@ public class TweetManager {
 	      result=tw.search(query);
 		List<Status> tweets=result.getTweets();
 		for(Status tweet:tweets){
-			if(!tweet.isRetweet())
-			listatweet.add(tweet.getText());
+			if(!tweet.isRetweet()){
+				URLEntity[]  urls=tweet.getURLEntities();
+				LinkedList<String> expandedURLs=new LinkedList<String>();
+				if(urls!=null){
+					for(int i=0;i<urls.length;i++)
+						expandedURLs.add(urls[i].getExpandedURL());
+				
+				
+			}
+				listatweet.add(new SimpleTweet(tweet.getText(),expandedURLs));
+			}
 		}
 		
 			

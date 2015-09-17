@@ -16,18 +16,17 @@ public GameSentiment(){
 public LinkedList<Tweet> exec(String topic){
 	LinkedList<Tweet> output=new LinkedList<Tweet>();
 	LinkedList<String> entita=null;
-	ArrayList<String> tweets=TweetManager.getTweets(topic);
-	 for(String text:tweets){
-     	if(text.length()>0){
-     	int sentiment=WrapperSentimentStanford.findSentiment(text);
-     	String url=URLextractor.extractURL(text);
-     	if(url!=null){
-     	String testopag=HtmlCleaner.getAndCleanHtml(url);
-     	entita=NERlibrary.getEntities(testopag);
+	LinkedList<SimpleTweet> tweets=TweetManager.getTweets(topic);
+	 for(SimpleTweet tw:tweets){
+     	if(tw.getText().length()>0){
+        String cleanText=TweetCleaner.cleanTweet(tw.getText());
+     	int sentiment=WrapperSentimentStanford.findSentiment(cleanText);
+     	if(tw.hasUrl()==true){
+     	//String testopag=HtmlCleaner.getAndCleanHtml(url);
+     	//entita=NERlibrary.getEntities(testopag);
      	}
-     	text=TweetCleaner.cleanTweet(text);
-     	Tweet tweet=new Tweet(topic,text,sentiment,url,entita);
-     	output.add(tweet);
+     	//Tweet tweet=new Tweet(topic,cleanText,sentiment,url,entita);
+     	//output.add(tweet);
      	}
      					
      	}

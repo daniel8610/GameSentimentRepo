@@ -5,14 +5,11 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
  
-/**
- * @author Abhijit Ghosh
- * @version 1.0
- */
+
 public class UrlExpander {
  
     public static void main(String[] args) throws IOException {
-        String shortenedUrl = "http://youtu.be/NYEK_yvIWas?a";
+        String shortenedUrl = "http://fb.me/47oQn4NEh";
         String expandedURL = expandUrl(shortenedUrl);
          
         System.out.println(shortenedUrl + "-->" + expandedURL); 
