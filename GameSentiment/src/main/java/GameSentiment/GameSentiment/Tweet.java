@@ -42,4 +42,8 @@ public void setUrlEntity(LinkedList<String> urlEntity) {
 	this.urlEntity = urlEntity;
 }
 
+public String getTopic() {
+	return this.topic;
+}
+
 }
