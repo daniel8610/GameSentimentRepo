@@ -9,7 +9,7 @@ import java.net.URL;
 public class UrlExpander {
  
     public static void main(String[] args) throws IOException {
-        String shortenedUrl = "http://fb.me/47oQn4NEh";
+        String shortenedUrl = "http://news1.co.vu/2LCE";
         String expandedURL = expandUrl(shortenedUrl);
          
         System.out.println(shortenedUrl + "-->" + expandedURL); 
@@ -26,6 +26,8 @@ public class UrlExpander {
         // extract location header containing the actual destination URL
         String expandedURL = httpURLConnection.getHeaderField("Location");
         httpURLConnection.disconnect();
+        if(expandedURL==null)
+        	return shortenedUrl;
          
         return expandedURL;
     }

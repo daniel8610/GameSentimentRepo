@@ -4,7 +4,8 @@ import java.util.LinkedList;
 
 import org.bson.Document;
 
-import GameSentiment.GameSentiment.Tweet;
+import GameSentiment.GameSentiment.ComplexTweet;
+import GameSentiment.GameSentiment.EntitiesUrl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -16,22 +17,23 @@ private DBCollection collection;
 @SuppressWarnings("deprecation")
 public ManagerMongoDb(){
 	this.mongoClient=new MongoClient( "localhost" , 27017 );
-	this.collection=mongoClient.getDB("test").getCollection("dbjava");
+	this.collection=mongoClient.getDB("test").getCollection("gameSentiment");
 	
 	
 }
-public void insertDocument(Tweet tw){
+public void insertDocument(ComplexTweet tw){
 	String s="";
 	BasicDBObject doc = new BasicDBObject("topic", tw.getTopic())
 	.append("text", tw.getText()) 
     .append("sentiment", tw.getSentiment());
-	if(tw.getUrl()!=null&&tw.getUrlEntity()!=null){
-	  doc.append("url", tw.getUrl());
-	  LinkedList<String> lista=tw.getUrlEntity();
-	  for(String e:lista){
-		  s+=e+",";
-	  }
-	  doc.append("entita", s);
+	if(tw.getUrlEntity().size()>0){
+		int i=0;
+		for(EntitiesUrl e:tw.getUrlEntity()){
+			i++;
+			doc.append("url:"+i, e.getUrl());
+			doc.append("entita:"+i, e.getEntities());
+		}
+	  
 	}
 	this.collection.insert(doc);
 }

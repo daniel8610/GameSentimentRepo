@@ -1,29 +1,33 @@
 package GameSentiment.GameSentiment;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
-import edu.stanford.nlp.ie.NERClassifierCombiner;
+import edu.stanford.nlp.ie.AbstractSequenceClassifier;
+import edu.stanford.nlp.ie.crf.CRFClassifier;
+import edu.stanford.nlp.ling.CoreLabel;
 
 public class WrapperStanfordNLP implements INamedEntityRecognition{
 	
 	private String serializedClassifier;
-	//private AbstractSequenceClassifier<CoreLabel> classifier;
-	private NERClassifierCombiner classifier;
+	private AbstractSequenceClassifier<CoreLabel> classifier;
+	//private NERClassifierCombiner classifier;
 	
 	public WrapperStanfordNLP(){
 		
 		try {
-			serializedClassifier = "training/english.all.3class.nodistsim.crf.ser.gz";
-			//classifier = CRFClassifier.getClassifier(serializedClassifier);
-			classifier = new NERClassifierCombiner(false, false, serializedClassifier);
+			serializedClassifier = "training/english.all.3class.distsim.crf.ser.gz";
+			classifier = CRFClassifier.getClassifier(serializedClassifier);
+			//classifier = new NERClassifierCombiner(false, false, serializedClassifier);
 		} catch (Exception e) {
 			System.out.println("Exception in WrapperStanfordNLP constructor");
 		}
 	}
+	
 	
 
 /*MODO MIO
@@ -38,32 +42,35 @@ public class WrapperStanfordNLP implements INamedEntityRecognition{
     		}
     		      
 */
-    private	LinkedList<String> getAll(String output){
-    	LinkedList<String> result = new LinkedList<String>();
-    	result.add("ORGANIZATION");
+    private	HashMap<String, LinkedList<String>> getAll(String output){
+    	LinkedList<String> resultORG = new LinkedList<String>();
+    	LinkedList<String> resultPER = new LinkedList<String>();
+    	LinkedList<String> resultLOC = new LinkedList<String>();
     	Iterator<Element> it = Jsoup.parse(output).getElementsByTag("ORGANIZATION").iterator();
     	while (it.hasNext()){
     		String entity = it.next().text();
-    		if (!result.contains(entity)){
-    			result.add(entity);
+    		if (!resultORG.contains(entity)){
+    			resultORG.add(entity);
     		}
     	}
-    	result.add("PERSON");
     	Iterator<Element> it2 = Jsoup.parse(output).getElementsByTag("PERSON").iterator();
     	while (it2.hasNext()){
     		String entity = it2.next().text();
-    		if (!result.contains(entity)){
-    			result.add(entity);
+    		if (!resultPER.contains(entity)){
+    			resultPER.add(entity);
     		}
     	}
-    	result.add("LOCATION");
     	Iterator<Element> it3 = Jsoup.parse(output).getElementsByTag("LOCATION").iterator();
     	while (it3.hasNext()){
     		String entity = it3.next().text();
-    		if (!result.contains(entity)){
-    			result.add(entity);
+    		if (!resultLOC.contains(entity)){
+    			resultLOC.add(entity);
     		}
     	}
+    	HashMap<String,LinkedList<String>> result=new HashMap();
+    	result.put("ORGANIZATION", resultORG);
+    	result.put("PERSON", resultPER);
+    	result.put("LOCATION", resultLOC);
     	
     	return result;
     	
@@ -80,7 +87,7 @@ public class WrapperStanfordNLP implements INamedEntityRecognition{
 		return result;
 	}
 	*/
-    public LinkedList<String> getEntities(String html) {
+    public HashMap<String, LinkedList<String>> getEntities(String html) {
 	    if(html!=null){
 		String output=this.classifier.classifyToString(html, "inlineXML", true);
 		return this.getAll(output);

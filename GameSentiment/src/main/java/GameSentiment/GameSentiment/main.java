@@ -8,6 +8,7 @@ import org.nibor.autolink.LinkExtractor;
 import org.nibor.autolink.LinkSpan;
 
 import GameSentiment.Repository.ManagerMongoDb;
+import GameSentiment.Utility.BlackListController;
 import GameSentiment.Utility.HtmlCleaner;
 import GameSentiment.Utility.TweetCleaner;
 import GameSentiment.Utility.URLextractor;
@@ -19,11 +20,11 @@ public class main
     {
 
     	String topic="Metal gear graphics";
-    	
+    	BlackListController bl=new BlackListController();
     	GameSentiment gs=new GameSentiment();
-    	LinkedList<Tweet> output=gs.exec(topic);
+    	LinkedList<ComplexTweet> output=gs.exec(topic,bl,true);
         ManagerMongoDb m=new ManagerMongoDb();
-        for(Tweet t:output){
+        for(ComplexTweet t:output){
         	m.insertDocument(t);
         	
         }
