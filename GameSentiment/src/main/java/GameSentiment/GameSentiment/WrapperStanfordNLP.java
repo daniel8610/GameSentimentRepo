@@ -92,7 +92,7 @@ public class WrapperStanfordNLP implements INamedEntityRecognition{
 		String output=this.classifier.classifyToString(html, "inlineXML", true);
 		return this.getAll(output);
 	    }else{
-	    	return null;
+	    	return new HashMap<String,LinkedList<String>>();
 	    }
 	}
 	

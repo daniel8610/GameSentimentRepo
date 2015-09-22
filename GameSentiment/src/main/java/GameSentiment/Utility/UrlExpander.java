@@ -8,12 +8,6 @@ import java.net.URL;
 
 public class UrlExpander {
  
-    public static void main(String[] args) throws IOException {
-        String shortenedUrl = "http://news1.co.vu/2LCE";
-        String expandedURL = expandUrl(shortenedUrl);
-         
-        System.out.println(shortenedUrl + "-->" + expandedURL); 
-    }
      
     public static String expandUrl(String shortenedUrl) throws IOException {
         URL url = new URL(shortenedUrl);    

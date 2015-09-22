@@ -1,6 +1,6 @@
 package GameSentiment.GameSentiment;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -25,24 +25,13 @@ public void setEntities(HashMap<String,LinkedList<String>> entities) {
 	this.entities = entities;
 }
 public LinkedList<String> getEntetiesList(){
+	if(this.entities.size()==0)
+		return new LinkedList<String>();
 	LinkedList<String> lista=new LinkedList<String>();
 	for(LinkedList<String> l:this.entities.values()){
 		lista.addAll(l);
 	}
 	return lista;
 }
-public static void main(String []args){
-	HashMap<String,LinkedList<String>> e=new HashMap<String,LinkedList<String>>();
-	LinkedList<String> a=new LinkedList<String>();
-	a.add("casa");
-	LinkedList<String> b=new LinkedList<String>();
-	b.add("tetto");
-	e.put("1", a);
-	e.put("3", b);
-	
-	EntitiesUrl u=new EntitiesUrl("ciao",e);
-	System.out.println(u.getEntetiesList());
-	
-	
-}
+
 }

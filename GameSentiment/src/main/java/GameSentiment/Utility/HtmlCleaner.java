@@ -1,7 +1,7 @@
 package GameSentiment.Utility;
 
 import java.io.IOException;
-
+import java.net.MalformedURLException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +21,9 @@ public static String getAndCleanHtml(String url){
 		return null;
 	}catch (BoilerpipeProcessingException e) {
 		e.printStackTrace();
+	}catch (IllegalArgumentException e){
+		System.out.println(url +" url malformed");
+		return null;
 	}
 	
 	return text;

@@ -20,8 +20,8 @@ public static String extractURL(String text){
 	
 	 
 	LinkSpan link = links.next();
-	link.getBeginIndex();  // 17
-	link.getEndIndex();    // 32
+	link.getBeginIndex(); 
+	link.getEndIndex();   
 	
 	return text.substring(link.getBeginIndex(), link.getEndIndex());
 	

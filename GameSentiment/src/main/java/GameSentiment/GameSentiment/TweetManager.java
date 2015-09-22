@@ -23,6 +23,7 @@ public class TweetManager {
 		LinkedList<SimpleTweet> listatweet=new LinkedList<SimpleTweet>();
 		try {
 		Query query=new Query(q);
+		query.setLang("en");
 		int j=0;
 		QueryResult result;
 		do{
@@ -39,12 +40,11 @@ public class TweetManager {
 						}
 			   }
 				listatweet.add(new SimpleTweet(TweetCleaner.cleanTweet(tweet.getText()),expandedURLs));
-			}}}while((query=result.nextQuery())!=null&&j<10);
+			}}}while((query=result.nextQuery())!=null&&j<9);
 	} catch (TwitterException te) {
         te.printStackTrace();
         System.out.println("Superato limite");
     } catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
 		
@@ -55,11 +55,5 @@ public class TweetManager {
 		return listatweet;
 		
 	}
-	public static void main(String []args){
-		List<SimpleTweet> l=TweetManager.getTweets("peace");
-		for(SimpleTweet t:l)
-			System.out.println(t.getText());
-		System.out.println(l.size());
-			
-	}
+	
 }

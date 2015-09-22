@@ -42,8 +42,6 @@ public class WrapperSentimentStanford {
     }
     
     
-    /*Da Finire perche in una frase da il sentiment di ogni sentence bisogna fare un 
-    risultato finale es pos +1 very pos +2 .....*/
     public static String findSentiment2(String tweet) {
         String sentiment="NonTrovato";
         if (tweet != null && tweet.length() > 0) {

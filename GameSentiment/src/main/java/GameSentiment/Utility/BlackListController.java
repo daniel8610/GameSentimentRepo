@@ -46,13 +46,7 @@ public class BlackListController {
 		return  check;
 	}
 	
-public static void main(String []args){
-	BlackListController b=new BlackListController();
-	System.out.println(b.urlCheck("http://youtu.be/V1JvRbcP5ag?a"));
-	
-	
-	
-}
+
 	
    
 }
