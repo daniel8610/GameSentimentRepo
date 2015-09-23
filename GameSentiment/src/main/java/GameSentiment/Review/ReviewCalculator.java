@@ -1,4 +1,4 @@
-package GameSentiment.review;
+package GameSentiment.Review;
 
 import java.util.LinkedList;
 

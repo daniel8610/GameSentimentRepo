@@ -18,7 +18,6 @@ public class WrapperSentimentStanford {
         pipeline = new StanfordCoreNLP("MyPropFile.properties");
     }
     
-    //questo da un sentiment totale prendendo la sentence piu lunga
     public static int findSentiment(String tweet) {
 
         int mainSentiment = 0;
@@ -41,7 +40,7 @@ public class WrapperSentimentStanford {
         return mainSentiment;
     }
     
-    
+    // Non Serve altro modo per fare il sentiment
     public static String findSentiment2(String tweet) {
         String sentiment="NonTrovato";
         if (tweet != null && tweet.length() > 0) {
@@ -50,7 +49,7 @@ public class WrapperSentimentStanford {
             List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
             for (CoreMap sentence : sentences) {
             	sentiment = sentence.get(SentimentCoreAnnotations.ClassName.class);
-            	 System.out.println(sentiment + "\t" + sentence);
+            	
             }
         }
         return sentiment;

@@ -40,7 +40,7 @@ public class TweetManager {
 						}
 			   }
 				listatweet.add(new SimpleTweet(TweetCleaner.cleanTweet(tweet.getText()),expandedURLs));
-			}}}while((query=result.nextQuery())!=null&&j<9);
+			}}}while((query=result.nextQuery())!=null);
 	} catch (TwitterException te) {
         te.printStackTrace();
         System.out.println("Superato limite");
